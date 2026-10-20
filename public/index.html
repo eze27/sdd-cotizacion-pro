@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CotizacionesPro</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/inicio">CotizacionesPro</a>
+    <nav id="nav" aria-label="Principal">
+      <a href="#/inicio" data-route="inicio">Inicio</a>
+      <a href="#/cotizaciones" data-route="cotizaciones">Cotizaciones</a>
+      <a href="#/clientes" data-route="clientes">Clientes</a>
+      <a href="#/servicios" data-route="servicios">Servicios</a>
+      <a href="#/perfil" data-route="perfil">Perfil</a>
+    </nav>
+  </header>
+  <div id="aviso" class="aviso" role="alert" hidden></div>
+  <main id="app"></main>
+  <script src="vendor/jspdf.umd.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

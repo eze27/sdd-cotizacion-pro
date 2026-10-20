@@ -1,0 +1,35 @@
+Cotización
+Folio 2026-001
+Fecha de emisión: 20 de octubre de 2026
+Vigencia hasta: 19 de noviembre de 2026
+De
+Para
+Ezequiel Hernández Peña
+RFC: HEPE940101AB1
+Régimen fiscal: Actividades Empresariales y Profesionales
+ezequiel@example.com · 55 1234 5678
+Acme Compañía, S.A. de C.V.
+RFC: ACM010101AAA
+Persona moral
+Descripción
+Cantidad
+Precio unitario
+Importe
+Diseño de sitio web
+1
+$15,000.00
+$15,000.00
+Horas de desarrollo
+2.5
+$2,000.00
+$5,000.00
+Subtotal
+$20,000.00
+IVA (16 %)
+$3,200.00
+Retención de ISR (10 %)
+-$2,000.00
+Retención de IVA (2/3)
+-$2,133.33
+Total
+$19,066.67
