@@ -8,6 +8,13 @@
 
 **Input**: User description: "Exportar todos mis presupuestos en un .zip. Que la persona freelancer pueda llevarse todas sus cotizaciones de una sola vez, en un único archivo comprimido, como copia de seguridad y para archivarlas donde quiera. Un botón «Exportar todo (.zip)» en la lista de cotizaciones descarga un .zip con un PDF por cada cotización (el mismo que ya genera la aplicación) y un único archivo de datos con cotizaciones, catálogo de servicios y perfil (logo incluido), pensado para poder restaurar la aplicación en el futuro. Importar la copia, exportar a Excel/CSV, copias automáticas y enviar el zip por email o nube quedan fuera."
 
+## Clarifications
+
+### Session 2026-10-21
+
+- Q: ¿El archivo de datos debe incluir también la lista de clientes guardados? → A: Sí, se incluyen los clientes guardados junto con cotizaciones, servicios y perfil.
+- Q: ¿Qué nombre debe llevar el archivo de datos dentro del .zip? → A: «datos-cotizaciones» (la extensión se decide en el plan).
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Descargar una copia completa en un solo archivo (Priority: P1)
@@ -91,7 +98,8 @@ Con muchas cotizaciones (50 o más) la exportación puede tardar. Mientras traba
 - **FR-002**: Al pulsar el botón con una o más cotizaciones guardadas, el sistema MUST descargar un único archivo .zip.
 - **FR-003**: El .zip MUST contener exactamente un PDF por cada cotización guardada, sin omitir ni duplicar ninguna.
 - **FR-004**: Cada PDF del .zip MUST ser el mismo documento que la aplicación genera hoy para esa cotización, con los mismos importes al centavo, sin recalcular ni reinterpretar.
-- **FR-005**: El .zip MUST contener un único archivo de datos con toda la información: cotizaciones (con sus conceptos), catálogo de servicios y perfil de la persona freelancer, incluido el logo.
+- **FR-005**: El .zip MUST contener un único archivo de datos con toda la información: cotizaciones (con sus conceptos), clientes guardados, catálogo de servicios y perfil de la persona freelancer, incluido el logo.
+- **FR-005a**: El archivo de datos MUST llamarse «datos-cotizaciones» (más la extensión que defina el plan) y MUST estar en el mismo nivel que los PDF.
 - **FR-006**: El archivo de datos MUST contener la información completa y suficiente para poder restaurar la aplicación en el futuro (la restauración en sí queda fuera de esta spec).
 - **FR-007**: El nombre del .zip MUST ser «cotizacion-copia-AAAA-MM-DD.zip», con la fecha del día de la exportación en hora de la Ciudad de México.
 - **FR-008**: El nombre de cada PDF dentro del .zip MUST ser «folio - cliente.pdf» (por ejemplo, «2026-001 - Estudio García.pdf»).
@@ -106,8 +114,8 @@ Con muchas cotizaciones (50 o más) la exportación puede tardar. Mientras traba
 
 - **Copia de seguridad (.zip)**: archivo único que agrupa los PDF de todas las cotizaciones y el archivo de datos; su nombre lleva la fecha de exportación.
 - **PDF de cotización**: documento de una cotización, igual al que ya se descarga una a una; en la copia se nombra «folio - cliente».
-- **Archivo de datos**: un solo archivo con las cotizaciones y sus conceptos, el catálogo de servicios y el perfil con su logo, pensado para una restauración futura.
-- **Cotización, Servicio, Perfil del freelancer**: entidades existentes de la spec 001; esta spec solo las lee.
+- **Archivo de datos**: un solo archivo con las cotizaciones y sus conceptos, los clientes guardados, el catálogo de servicios y el perfil con su logo, pensado para una restauración futura.
+- **Cotización, Cliente, Servicio, Perfil del freelancer**: entidades existentes de la spec 001; esta spec solo las lee.
 
 ## Success Criteria *(mandatory)*
 
@@ -127,7 +135,7 @@ Con muchas cotizaciones (50 o más) la exportación puede tardar. Mientras traba
 - «Céntimo» se entiende como centavo, acorde con la moneda MXN (Principio II de la constitución).
 - Se exportan todas las cotizaciones guardadas, vigentes y vencidas, sin filtros ni selección parcial.
 - La aplicación es de una sola persona, sin cuentas ni contraseña; la exportación no pide autenticación.
-- El formato concreto del archivo de datos queda a decisión del plan; solo se exige que sea un único archivo con información completa. Su restauración (importar) es otra spec.
+- El formato y la extensión del archivo de datos quedan a decisión del plan; solo se exige que sea un único archivo con información completa y el nombre «datos-cotizaciones». Su restauración (importar) es otra spec.
 - Dos cotizaciones nunca tienen el mismo folio, por lo que los nombres de PDF dentro del .zip no chocan aunque dos clientes se llamen igual.
 - El .zip se guarda donde el navegador guarde las descargas; la aplicación no elige la carpeta ni envía el archivo a ningún lado.
 - Fuera de alcance: importar o restaurar la copia, exportar a Excel/CSV con formato contable, copias automáticas o programadas, y enviar el .zip por correo o subirlo a una nube.
