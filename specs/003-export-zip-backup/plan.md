@@ -56,12 +56,13 @@ siendo pequeño aunque cada cotización traiga su copia del logo.
 | III. Cero alcance fantasma | Cada pieza traza a un FR de la spec (tabla abajo). Sin importar, sin CSV, sin copias automáticas. Los contadores de folio entran por FR-006 (restauración futura) | Pasa |
 | IV. Verificable por persona no técnica | `quickstart.md` usa solo la app y el explorador de archivos | Pasa |
 | V. Datos con respeto | Solo datos que la app ya guarda; el .zip va únicamente al equipo de la persona. Sin claves ni secretos | Pasa |
+| Restricciones del Producto | El .zip solo devuelve a la persona sus propios datos, lo que la constitución 1.0.2 admite expresamente («devolvérselos a esa misma persona, por ejemplo en una copia de seguridad»). El alcance es el de esta spec | Pasa |
 
 Re-evaluación tras el diseño (Phase 1): sin cambios, todos pasan. Sin entradas en Complexity Tracking.
 
-**Nota sobre la constitución**: dice que los datos viven en el ordenador de la persona; la 001 los guarda
-en SQLite del servidor (que en uso local es el mismo equipo). No afecta a esta feature, pero la redacción
-conviene revisarla con la persona dueña del producto.
+**Nota sobre la constitución**: la restricción de uso de datos se aclaró en la versión 1.0.2 (PATCH, aprobada
+por la persona dueña el 2026-10-21) para admitir copias de seguridad que se devuelven a la misma persona.
+Además, la 001 guarda los datos en SQLite del servidor (en uso local, el mismo equipo); no afecta a esta feature.
 
 ### Trazabilidad spec → diseño
 
@@ -102,7 +103,7 @@ server/
 └── routes/
     ├── backup.js        # NUEVO: GET /  (solo lectura)
     ├── index.js         # monta /backup
-    └── quotes.js        # exporta `serialize` para reutilizarlo (sin cambiar su comportamiento)
+    └── quotes.js        # exporta `createQuoteSerializer(db, today)` para reutilizar `serialize` (sin cambiar su comportamiento)
 
 public/
 ├── vendor/
@@ -120,8 +121,8 @@ tests/
 
 **Structure Decision**: se mantiene la estructura de la 001 (servidor Express + `public/`). El código
 nuevo cabe en un módulo de navegador, una ruta y dos archivos de prueba. `calc.js`, el esquema de datos
-y el comportamiento de las rutas existentes no se tocan; `quotes.js` solo exporta una función que ya
-existe.
+y el comportamiento de las rutas existentes no se tocan; `quotes.js` solo expone la serialización que ya
+tiene.
 
 ## Complexity Tracking
 

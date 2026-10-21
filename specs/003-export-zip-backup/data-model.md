@@ -7,7 +7,6 @@ exportación solo lee. Este documento describe el contenido de `datos-cotizacion
 
 | Campo | Contenido | Origen |
 |-------|-----------|--------|
-| `formatVersion` | Número entero, hoy `1`. Una importación futura lo usa para saber cómo leer el archivo | Constante |
 | `exportDate` | `AAAA-MM-DD`, día de la exportación en hora de la Ciudad de México | Fecha del servidor |
 | `profile` | `{ name, rfc, regime, contact, logo }` o `null` si aún no hay perfil. `logo` es un data URL o `null` | Tabla `profile` |
 | `services` | Lista de `{ id, name, priceCents }` | Tabla `services` |

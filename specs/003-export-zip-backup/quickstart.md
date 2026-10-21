@@ -15,9 +15,12 @@ Guía para comprobar la spec 003 usando la aplicación (Principio IV). No requie
 1. Abrir **Cotizaciones**: junto a «Nueva cotización» está el botón **Exportar todo (.zip)**.
 2. Pulsarlo → se descarga un único archivo `cotizacion-copia-AAAA-MM-DD.zip` con la fecha de hoy.
 3. Descomprimirlo con doble clic: hay 3 PDF `folio - cliente.pdf` y `datos-cotizaciones.json`, todos en el
-   mismo nivel. El cliente `Diseño/Web S.L.` aparece como `Diseño-Web S.L.`.
+   mismo nivel. Para el cliente `Diseño/Web S.L.` el archivo se llama `2026-004 - Diseño-Web S.L.pdf`
+   (sustituye la barra por un guion), con el folio que corresponda.
 4. Abrir `datos-cotizaciones.json` con el Bloc de notas: se ve el perfil, los servicios, los clientes y
    las 3 cotizaciones.
+5. Con unas 10 cotizaciones, medir con reloj desde que se pulsa el botón hasta ver los archivos
+   descomprimidos: menos de 1 minuto, sin ayuda (SC-007).
 
 ## 2. PDF idénticos (Historia 2 · SC-002)
 

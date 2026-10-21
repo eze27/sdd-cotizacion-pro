@@ -61,7 +61,7 @@ No quedaban `NEEDS CLARIFICATION` en el contexto técnico. Estas son las decisio
 
 ## 5. Formato del archivo de datos
 
-- **Decision**: `datos-cotizaciones.json`, JSON con sangría, con un número de versión del formato.
+- **Decision**: `datos-cotizaciones.json`, JSON con sangría. Sin número de versión del formato: sería un preparativo para una importación que esta spec deja fuera (Principio I).
 - **Rationale**: se puede abrir con cualquier editor de texto, no necesita herramientas especiales y
   una futura importación lo lee directamente. El nombre lo fijó la clarificación; la extensión era del
   plan. Incluye el logo como texto (data URL), por lo que el archivo es autosuficiente.
