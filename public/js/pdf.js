@@ -46,7 +46,8 @@ export function readTheme() {
   };
 }
 
-export async function downloadQuotePdf(quote) {
+// Arma el PDF de una cotización y devuelve el documento de jsPDF, sin guardarlo.
+export async function buildQuotePdf(quote) {
   const { jsPDF } = window.jspdf;
   const theme = readTheme();
   const doc = new jsPDF({ unit: 'pt', format: 'letter' });
@@ -193,5 +194,10 @@ export async function downloadQuotePdf(quote) {
   doc.text('Total', TOTALS_X, y + 23);
   doc.text(formatMoney(t.total), RIGHT - 10, y + 23, { align: 'right' });
 
+  return doc;
+}
+
+export async function downloadQuotePdf(quote) {
+  const doc = await buildQuotePdf(quote);
   doc.save(`Cotizacion-${quote.folio}.pdf`);
 }

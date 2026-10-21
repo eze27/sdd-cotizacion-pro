@@ -4,6 +4,7 @@ import {
 } from '../ui.js';
 import { formatMoney } from '../calc.js';
 import { downloadQuotePdf } from '../pdf.js';
+import { exportAll } from '../backup.js';
 
 const COLUMNS = [
   { label: 'Cotización' },
@@ -48,8 +49,21 @@ export async function render(container) {
     ])));
   }
 
+  const EXPORT_LABEL = 'Exportar todo (.zip)';
+  const exportBtn = button(EXPORT_LABEL, null, async () => {
+    exportBtn.disabled = true;
+    try {
+      await exportAll((done, total) => { exportBtn.textContent = `Exportando… ${done} de ${total}`; });
+    } catch (err) {
+      aviso(err.message);
+    } finally {
+      exportBtn.textContent = EXPORT_LABEL;
+      exportBtn.disabled = false;
+    }
+  });
+
   container.append(
-    pageHeader('Cotizaciones', linkButton('Nueva cotización', 'primary', '#/cotizacion/nueva')),
+    pageHeader('Cotizaciones', exportBtn, linkButton('Nueva cotización', 'primary', '#/cotizacion/nueva')),
     holder,
   );
   drawList();
