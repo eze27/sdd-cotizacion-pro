@@ -1,7 +1,8 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.0 → 1.0.1 (PATCH: el producto se renombra de PresupuestosPro a CotizacionesPro)
-- Principios modificados: ninguno (constitución inicial)
+- Version change: 1.0.1 → 1.0.2 (PATCH: aclaración de que devolver sus datos a la misma persona, por ejemplo en una copia de seguridad, no contradice la restricción de uso de datos)
+- Principios modificados: ninguno
+- Historial: 1.0.0 → 1.0.1 (PATCH: el producto se renombra de PresupuestosPro a CotizacionesPro)
 - Secciones añadidas: Principios Fundamentales (5), Restricciones del Producto, Forma de Trabajo, Gobernanza
 - Secciones eliminadas: ninguna
 - TODOs pendientes: ninguno
@@ -39,7 +40,8 @@ claves, contraseñas ni secretos en el código ni en el repositorio.
 ## Restricciones del Producto
 
 - El alcance del producto es únicamente el definido en la spec vigente.
-- Los datos que el usuario captura MUST usarse solo para generar su presupuesto.
+- Los datos que el usuario captura MUST usarse solo para generar su presupuesto y para
+  devolvérselos a esa misma persona (por ejemplo, en una copia de seguridad que ella descarga).
 
 ## Forma de Trabajo
 
@@ -56,4 +58,4 @@ Versionado semántico: MAJOR si se elimina o redefine un principio; MINOR si se 
 principio o se amplía materialmente; PATCH para aclaraciones de redacción. Cada plan y
 revisión MUST confirmar que cumple los principios.
 
-**Version**: 1.0.1 | **Ratified**: 2026-10-16 | **Last Amended**: 2026-10-19
+**Version**: 1.0.2 | **Ratified**: 2026-10-16 | **Last Amended**: 2026-10-21
