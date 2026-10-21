@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-21
 
-**Status**: Draft
+**Status**: PUBLISHED
 
 **Input**: User description: "Exportar todos mis presupuestos en un .zip. Que la persona freelancer pueda llevarse todas sus cotizaciones de una sola vez, en un único archivo comprimido, como copia de seguridad y para archivarlas donde quiera. Un botón «Exportar todo (.zip)» en la lista de cotizaciones descarga un .zip con un PDF por cada cotización (el mismo que ya genera la aplicación) y un único archivo de datos con cotizaciones, catálogo de servicios y perfil (logo incluido), pensado para poder restaurar la aplicación en el futuro. Importar la copia, exportar a Excel/CSV, copias automáticas y enviar el zip por email o nube quedan fuera."
 

@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-20
 
-**Status**: Draft
+**Status**: PUBLISHED
 
 **Input**: User description: "Mejorar la presentación de CotizacionesPro (aplicación ya implementada en la spec 001) con dos cambios, sin alterar ninguna funcionalidad ni dato existente. Primero, una página de inicio como punto de entrada, con acceso claro a Cotizaciones, Clientes, Servicios y Perfil, un resumen de actividad con el número de cotizaciones por estado y una navegación común, visible y adaptable a móvil en todas las páginas. Segundo, un rediseño visual de toda la aplicación y del PDF, limpio, sobrio y profesional, con referencia al estilo de PrimeNG, con tipografía consistente, paleta limitada y centralizada, espaciado uniforme, componentes reutilizables y etiquetas de estado con colores semánticos discretos. Mantener mobile-first. La lógica de negocio, los cálculos, la API, el esquema de datos y las funcionalidades existentes no deben cambiar."
 

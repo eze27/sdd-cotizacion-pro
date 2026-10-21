@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-19
 
-**Status**: Draft
+**Status**: PUBLISHED
 
 **Input**: User description: "CotizacionesPro v0 (México): herramienta para que un freelancer cree cotizaciones con su marca y las descargue en PDF, con IVA y retenciones calculados automáticamente. Incluye perfil, catálogo de servicios, catálogo de clientes y lista de cotizaciones."
 
