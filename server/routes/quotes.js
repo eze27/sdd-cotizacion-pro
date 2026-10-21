@@ -19,16 +19,13 @@ function parseLines(lines) {
   });
 }
 
-export function createQuotesRouter(db, today) {
-  const router = Router();
-
-  const getQuoteRow = db.prepare('SELECT * FROM quotes WHERE id = ?');
+// Cotización completa tal como la entrega la API; la usan GET /quotes/:id y GET /backup.
+export function createQuoteSerializer(db, today) {
   const getLines = db.prepare(
     'SELECT description, quantity_hundredths, unit_price_cents FROM quote_lines WHERE quote_id = ? ORDER BY position',
   );
-  const getClient = db.prepare('SELECT id, name, rfc, type FROM clients WHERE id = ?');
 
-  function serialize(row) {
+  return function serialize(row) {
     const lines = getLines.all(row.id).map((l) => ({
       description: l.description,
       quantityHundredths: l.quantity_hundredths,
@@ -51,7 +48,15 @@ export function createQuotesRouter(db, today) {
       lines,
       totals,
     };
-  }
+  };
+}
+
+export function createQuotesRouter(db, today) {
+  const router = Router();
+
+  const getQuoteRow = db.prepare('SELECT * FROM quotes WHERE id = ?');
+  const getClient = db.prepare('SELECT id, name, rfc, type FROM clients WHERE id = ?');
+  const serialize = createQuoteSerializer(db, today);
 
   function insertLines(quoteId, lines) {
     const ins = db.prepare(

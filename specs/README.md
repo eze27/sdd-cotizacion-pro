@@ -1,15 +1,16 @@
 # Estado del producto: CotizacionesPro
 
-Índice de las specs y de su avance. Las reglas del producto están en `.specify/memory/constitution.md`.
+Índice de las specs y de su avance. Las reglas del producto están en `.specify/memory/constitution.md` (versión 1.0.2).
 
-| Spec | Qué entrega | Implementación | Pendiente |
-|------|-------------|----------------|-----------|
-| [001-cotizaciones-pro](001-cotizaciones-pro/spec.md) | Perfil, clientes, servicios y cotizaciones con IVA y retenciones; PDF; folios y vigencia de 30 días | 41 de 44 tareas | T041 prueba en Chrome y Firefox, T042 recorrido final de pruebas y `quickstart.md`, T044 publicar en un hosting con disco persistente |
-| [002-rediseno-inicio](002-rediseno-inicio/spec.md) | Página de inicio con resumen de vigentes y vencidas, navegación común, sistema visual único y PDF con la misma identidad | 31 de 35 tareas | T031 prueba visual en Chrome y Firefox, T032 revisión de los PDF, T033 recorrido de los flujos de la spec 001, T034 decidir con el dueño los ítems `[Gap]` de `checklists/ux.md` |
+| Nº | Spec | Rama | Qué aporta | Estado | Pendiente |
+|----|------|------|------------|--------|-----------|
+| 001 | [cotizaciones-pro](001-cotizaciones-pro/spec.md) | `001-cotizaciones-pro` (integrada en `main`) | Perfil, clientes, servicios y cotizaciones con IVA y retenciones; PDF; folios y vigencia de 30 días | PUBLISHED. Implementación: 41 de 44 tareas. **Modificada por la 002**: la página de inicio reemplaza a la lista como entrada de la aplicación, la navegación común reemplaza a la barra anterior, y el nuevo sistema visual y la nueva plantilla del PDF reemplazan a los anteriores (contenido, cálculos e importes iguales). **Modificada por la 003**: la lista de cotizaciones suma el botón «Exportar todo (.zip)», la API suma `GET /api/backup` (solo lectura) y `quotes.js` del servidor y `pdf.js` se reorganizan por dentro sin cambiar sus respuestas ni el PDF | T041 prueba en Chrome y Firefox, T042 recorrido final de pruebas y `quickstart.md`, T044 publicar en un hosting con disco persistente |
+| 002 | [rediseno-inicio](002-rediseno-inicio/spec.md) | `002-rediseno-inicio` (integrada en `main`) | Página de inicio con resumen de vigentes y vencidas, navegación común, sistema visual único y PDF con la misma identidad | PUBLISHED. Implementación: 31 de 35 tareas. **Modifica la 001**: reemplaza su entrada, su navegación, su aspecto y la presentación de su PDF (ver la fila 001). **Tocada por la 003**: la cabecera de la pantalla Cotizaciones suma un botón hecho con los componentes de esta spec; su sistema visual y la presentación del PDF no cambian | T031 prueba visual en Chrome y Firefox, T032 revisión de los PDF, T033 recorrido de los flujos de la spec 001, T034 decidir con el dueño los ítems `[Gap]` de `checklists/ux.md` |
+| 003 | [export-zip-backup](003-export-zip-backup/spec.md) | `003-export-zip-backup` (aún sin integrar en `main`) | Botón «Exportar todo (.zip)» en la lista de cotizaciones: un .zip con un PDF por cotización y `datos-cotizaciones.json` (cotizaciones, clientes, servicios, perfil y contadores de folio), como copia de seguridad | PUBLISHED. Implementación: 22 de 23 tareas. **Modifica la 001**: botón nuevo en su lista, `GET /api/backup` nuevo y reorganización interna de `quotes.js` y `pdf.js` sin cambiar respuestas ni PDF. **Toca la 002**: usa sus componentes en la cabecera de Cotizaciones, sin cambiar su sistema visual; añade JSZip como archivo local. No reemplaza nada. Enmendó la constitución a 1.0.2 (devolver sus datos a la misma persona, por ejemplo en una copia de seguridad, está permitido) | T022: recorrido en Firefox y medición de SC-007 (menos de 1 minuto con unas 10 cotizaciones) |
 
 ## Notas
 
-- Ambas specs tienen el estado `Draft` en su `spec.md`; no se ha cerrado ninguna formalmente.
+- Las tres specs tienen el estado `PUBLISHED` en su `spec.md`; ese cambio está sin confirmar en git.
 - Las tareas pendientes son verificaciones a mano en navegador o visor de PDF, y la publicación del servidor.
-- Fuera de alcance por ahora: los estados Borrador, Enviado, Aceptado y Rechazado, el modo oscuro, cuentas y contraseña.
+- Fuera de alcance por ahora: los estados Borrador, Enviado, Aceptado y Rechazado, el modo oscuro, cuentas y contraseña. Fuera de alcance de la 003: importar o restaurar la copia, exportar a Excel/CSV, copias automáticas y enviar el .zip por correo o a una nube.
 - Cada spec vive en `specs/NNN-nombre/` con su `plan.md`, `tasks.md`, `contracts/` y `quickstart.md`.
