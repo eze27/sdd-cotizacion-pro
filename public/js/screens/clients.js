@@ -1,6 +1,7 @@
 import { get, post, put, del } from '../api.js';
 import {
   el, aviso, confirmar, CLIENT_TYPES, button, field, formError, pageHeader, dataList,
+  setFieldError, clearFieldErrors,
 } from '../ui.js';
 import { isValidRfc, normalizeRfc } from '../calc.js';
 
@@ -31,6 +32,7 @@ export async function render(container) {
     rfc.value = '';
     type.value = '';
     error.textContent = '';
+    clearFieldErrors(name, type, rfc);
     formTitle.textContent = 'Nuevo cliente';
     cancel.hidden = true;
   }
@@ -58,7 +60,7 @@ export async function render(container) {
       el('div', { class: 'actions actions--inline' },
         button('Editar', null, () => startEdit(c)),
         button('Eliminar', 'danger', async () => {
-          if (!confirmar(`¿Eliminar al cliente "${c.name}"? Las cotizaciones ya guardadas no cambian.`)) return;
+          if (!await confirmar(`¿Eliminar al cliente "${c.name}"? Las cotizaciones ya guardadas no cambian.`)) return;
           try {
             await del(`/clients/${c.id}`);
             clients = clients.filter((x) => x.id !== c.id);
@@ -73,9 +75,11 @@ export async function render(container) {
   async function save(e) {
     e.preventDefault();
     error.textContent = '';
-    if (!name.value.trim()) { error.textContent = 'Escribe el nombre o la razón social del cliente.'; return; }
-    if (!type.value) { error.textContent = 'Elige si el cliente es persona moral o persona física.'; return; }
-    if (!isValidRfc(rfc.value, { allowEmpty: true })) { error.textContent = 'El RFC del cliente no tiene un formato válido.'; return; }
+    clearFieldErrors(name, type, rfc);
+    // El campo con error se marca además de llevar su mensaje debajo (FR-022).
+    if (!name.value.trim()) { setFieldError(name, 'Escribe el nombre o la razón social del cliente.'); name.focus(); return; }
+    if (!type.value) { setFieldError(type, 'Elige si el cliente es persona moral o persona física.'); type.focus(); return; }
+    if (!isValidRfc(rfc.value, { allowEmpty: true })) { setFieldError(rfc, 'El RFC del cliente no tiene un formato válido.'); rfc.focus(); return; }
     const body = { name: name.value.trim(), rfc: normalizeRfc(rfc.value), type: type.value };
     try {
       if (editingId) {

@@ -1,6 +1,7 @@
 import { get, post, put } from '../api.js';
 import {
   el, aviso, formatDateLong, CLIENT_TYPES, REGIMES, button, linkButton, field, formError, statusTag, pageHeader, dataList,
+  setFieldError, clearFieldErrors,
 } from '../ui.js';
 import {
   calcQuote, lineAmount, formatMoney, formatQuantity, parseQuantity, parsePrice,
@@ -40,7 +41,9 @@ async function renderSaved(container, id) {
     pageHeader(`Cotización ${quote.folio}`, statusTag(quote.expired)),
     el('div', { class: 'card' },
       el('p', {}, `Cliente: ${quote.client.name} (${CLIENT_TYPES[quote.client.type]})`),
-      el('p', { class: 'muted' }, `Emitida el ${formatDateLong(quote.issueDate)} · Vigencia hasta ${formatDateLong(quote.validUntil)}`),
+      el('p', { class: 'muted' },
+        `Emitida el ${formatDateLong(quote.issueDate)} · Vigencia hasta `,
+        el('strong', { class: 'accent' }, formatDateLong(quote.validUntil))),
       el('p', { class: 'muted' }, `Régimen: ${REGIMES[quote.freelancer.regime]}`),
     ),
     dataList([
@@ -168,13 +171,13 @@ async function renderForm(container, existing) {
   function parseLine(l) {
     const qty = parseQuantity(l.quantity);
     const price = parsePrice(l.price);
-    if (!l.description.trim()) return { error: 'Escribe la descripción del concepto.' };
-    if (qty === null) return { error: 'La cantidad debe ser un número con máximo 2 decimales.' };
+    if (!l.description.trim()) return { error: 'Escribe la descripción del concepto.', campo: 'desc' };
+    if (qty === null) return { error: 'La cantidad debe ser un número con máximo 2 decimales.', campo: 'qty' };
     const vq = validateQuantity(qty);
-    if (!vq.ok) return { error: vq.error };
-    if (price === null) return { error: 'Escribe un precio válido (máximo 2 decimales).' };
+    if (!vq.ok) return { error: vq.error, campo: 'qty' };
+    if (price === null) return { error: 'Escribe un precio válido (máximo 2 decimales).', campo: 'price' };
     const vp = validatePrice(price);
-    if (!vp.ok) return { error: vp.error };
+    if (!vp.ok) return { error: vp.error, campo: 'price' };
     return { description: l.description.trim(), quantityHundredths: qty, unitPriceCents: price };
   }
 
@@ -215,14 +218,34 @@ async function renderForm(container, existing) {
     updateTotals();
   }
 
+  // Limpia el estado inválido del cliente y de los tres campos de cada concepto.
+  function limpiarErroresDeCampo() {
+    clearFieldErrors(clientSelect);
+    state.lines.forEach((_, i) => clearFieldErrors(
+      ['desc', 'qty', 'price'].map((c) => document.getElementById(`${c}-${i}`)).filter(Boolean),
+    ));
+  }
+
   async function save() {
     error.textContent = '';
-    if (!state.clientId) { error.textContent = 'Elige un cliente para la cotización.'; return; }
+    limpiarErroresDeCampo();
+    if (!state.clientId) {
+      setFieldError(clientSelect, 'Elige un cliente para la cotización.');
+      clientSelect.focus();
+      return;
+    }
     if (state.lines.length === 0) { error.textContent = 'Agrega al menos un concepto a la cotización.'; return; }
     const parsed = [];
     for (let i = 0; i < state.lines.length; i++) {
       const p = parseLine(state.lines[i]);
-      if (p.error) { error.textContent = `Concepto ${i + 1}: ${p.error}`; return; }
+      if (p.error) {
+        // El campo con error se marca además de llevar el mensaje del formulario (FR-022).
+        const control = document.getElementById(`${p.campo}-${i}`);
+        setFieldError(control, p.error);
+        if (control) control.focus();
+        error.textContent = `Concepto ${i + 1}: ${p.error}`;
+        return;
+      }
       parsed.push(p);
     }
     saveBtn.disabled = true;

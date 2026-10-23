@@ -16,8 +16,9 @@ function countText(n) {
 export async function render(container) {
   const profile = await get('/profile');
 
-  const vigentes = el('span', { class: 'tag tag--info summary__value' }, 'Cargando…');
-  const vencidas = el('span', { class: 'tag tag--warn summary__value' }, 'Cargando…');
+  // El hueco de cada cifra queda reservado con su tamaño final: al llegar el dato nada salta (SC-018).
+  const vigentes = el('span', { class: 'tag tag--success summary__value' }, el('span', { class: 'skeleton' }));
+  const vencidas = el('span', { class: 'tag tag--warn summary__value' }, el('span', { class: 'skeleton' }));
   const total = el('p', { class: 'muted' });
   const message = el('p', { class: 'empty' });
 
@@ -44,8 +45,9 @@ export async function render(container) {
     total.textContent = `Total: ${countText(summary.total)}`;
     if (summary.total === 0) message.textContent = 'Aún no tienes cotizaciones. Crea la primera.';
   } catch {
-    vigentes.textContent = '–';
-    vencidas.textContent = '–';
+    // Un fallo no se muestra como un guion, que se confunde con un cero (FR-005, FR-021).
+    vigentes.textContent = 'Sin dato';
+    vencidas.textContent = 'Sin dato';
     message.textContent = 'No se pudo cargar el resumen. Intenta de nuevo.';
     message.setAttribute('role', 'alert');
   }

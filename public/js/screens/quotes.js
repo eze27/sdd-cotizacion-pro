@@ -31,14 +31,14 @@ export async function render(container) {
       formatDateLong(q.issueDate),
       formatMoney(q.total),
       statusTag(q.expired),
+      // Tres acciones jerarquizadas, sin «Abrir»: el folio de la fila ya es el enlace (FR-026a).
       el('div', { class: 'actions actions--inline' },
-        linkButton('Abrir', null, `#/cotizacion/${q.id}`),
         button('Descargar PDF', null, async () => {
           try { await downloadQuotePdf(await get(`/quotes/${q.id}`)); } catch (err) { aviso('No se pudo crear el PDF. Intenta de nuevo.'); }
         }),
-        linkButton('Editar', null, `#/cotizacion/${q.id}/editar`),
+        linkButton('Editar', 'text', `#/cotizacion/${q.id}/editar`),
         button('Eliminar', 'danger', async () => {
-          if (!confirmar(`¿Eliminar la cotización ${q.folio}? Esta acción no se puede deshacer.`)) return;
+          if (!await confirmar(`¿Eliminar la cotización ${q.folio}? Esta acción no se puede deshacer.`)) return;
           try {
             await del(`/quotes/${q.id}`);
             quotes = quotes.filter((x) => x.id !== q.id);
@@ -49,16 +49,24 @@ export async function render(container) {
     ])));
   }
 
+  // El avance se muestra dentro del botón, cuyo ancho se congela al empezar: así ni él ni
+  // «Nueva cotización», a su lado, se desplazan durante la exportación (SC-020).
   const EXPORT_LABEL = 'Exportar todo (.zip)';
-  const exportBtn = button(EXPORT_LABEL, null, async () => {
+  const exportLabel = el('span', {}, EXPORT_LABEL);
+  const exportAvance = el('span', { class: 'btn__avance' });
+  const exportBtn = button([exportLabel, exportAvance], null, async () => {
+    exportBtn.style.width = `${exportBtn.offsetWidth}px`;
     exportBtn.disabled = true;
+    exportLabel.textContent = 'Exportando…';
     try {
-      await exportAll((done, total) => { exportBtn.textContent = `Exportando… ${done} de ${total}`; });
+      await exportAll((done, total) => { exportAvance.textContent = ` ${done}/${total}`; });
     } catch (err) {
       aviso(err.message);
     } finally {
-      exportBtn.textContent = EXPORT_LABEL;
+      exportAvance.textContent = '';
+      exportLabel.textContent = EXPORT_LABEL;
       exportBtn.disabled = false;
+      exportBtn.style.width = '';
     }
   });
 
