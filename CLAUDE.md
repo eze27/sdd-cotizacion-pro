@@ -8,7 +8,11 @@ Aplicación web de un solo usuario para que freelancers mexicanos generen cotiza
 - El PDF se genera en el navegador (`public/js/pdf.js`). Lee los colores de los tokens de `public/css/styles.css`.
 - Dinero en centavos enteros y cantidades en centésimas. `public/js/calc.js` es la única copia de las reglas de cálculo y la usan el servidor y las pantallas.
 - Fechas y folios con hora de la Ciudad de México. Sin cuentas ni contraseña, por decisión del dueño.
-- Tema único en `:root` de `styles.css`: colores, tipografía y espaciado. Sin valores sueltos en los componentes.
+- Tema único en `:root` de `styles.css` (dirección visual «Despacho»): color, tipografía, escala de texto, espaciado, forma,
+  elevación, densidad y movimiento. Sin valores sueltos en los componentes.
+- Dos familias tipográficas, como archivos locales en `public/fonts/` (igual que jsPDF y JSZip en `public/vendor/`): sin CDN
+  y sin red externa. Serif para títulos, folio y total; sans para el resto, con cifras de ancho fijo en los importes.
+- Las confirmaciones usan el componente propio de `ui.js` sobre el elemento `<dialog>` nativo, nunca `window.confirm`.
 
 ## Local
 - `npm install`, `npm start` y abrir http://localhost:3000.

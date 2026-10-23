@@ -1,5 +1,7 @@
 import { get, put } from '../api.js';
-import { el, aviso, REGIMES, button, field, formError, pageHeader } from '../ui.js';
+import {
+  el, aviso, REGIMES, button, field, formError, pageHeader, setFieldError, clearFieldErrors,
+} from '../ui.js';
 import { isValidRfc, normalizeRfc } from '../calc.js';
 import { processLogo } from '../logo.js';
 
@@ -44,10 +46,12 @@ export async function render(container) {
   async function save(e) {
     e.preventDefault();
     error.textContent = '';
-    if (!name.value.trim()) { error.textContent = 'Escribe tu nombre.'; return; }
-    if (!rfc.value.trim()) { error.textContent = 'Escribe tu RFC.'; return; }
-    if (!isValidRfc(rfc.value)) { error.textContent = 'El RFC no tiene un formato válido.'; return; }
-    if (!regime.value) { error.textContent = 'Elige tu régimen fiscal.'; return; }
+    clearFieldErrors(name, rfc, regime);
+    // El campo con error se marca además de llevar su mensaje debajo (FR-022).
+    if (!name.value.trim()) { setFieldError(name, 'Escribe tu nombre.'); name.focus(); return; }
+    if (!rfc.value.trim()) { setFieldError(rfc, 'Escribe tu RFC.'); rfc.focus(); return; }
+    if (!isValidRfc(rfc.value)) { setFieldError(rfc, 'El RFC no tiene un formato válido.'); rfc.focus(); return; }
+    if (!regime.value) { setFieldError(regime, 'Elige tu régimen fiscal.'); regime.focus(); return; }
     try {
       await put('/profile', {
         name: name.value.trim(), rfc: normalizeRfc(rfc.value), regime: regime.value,

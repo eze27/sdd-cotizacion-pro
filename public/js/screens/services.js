@@ -1,5 +1,7 @@
 import { get, post, put, del } from '../api.js';
-import { el, aviso, confirmar, button, field, formError, pageHeader, dataList } from '../ui.js';
+import {
+  el, aviso, confirmar, button, field, formError, pageHeader, dataList, setFieldError, clearFieldErrors,
+} from '../ui.js';
 import { formatMoney, parsePrice, validatePrice } from '../calc.js';
 
 const COLUMNS = [
@@ -25,6 +27,7 @@ export async function render(container) {
     name.value = '';
     price.value = '';
     error.textContent = '';
+    clearFieldErrors(name, price);
     formTitle.textContent = 'Nuevo servicio';
     cancel.hidden = true;
   }
@@ -50,7 +53,7 @@ export async function render(container) {
       el('div', { class: 'actions actions--inline' },
         button('Editar', null, () => startEdit(s)),
         button('Eliminar', 'danger', async () => {
-          if (!confirmar(`¿Eliminar el servicio "${s.name}"?`)) return;
+          if (!await confirmar(`¿Eliminar el servicio "${s.name}"?`)) return;
           try {
             await del(`/services/${s.id}`);
             services = services.filter((x) => x.id !== s.id);
@@ -65,10 +68,12 @@ export async function render(container) {
   async function save(e) {
     e.preventDefault();
     error.textContent = '';
-    if (!name.value.trim()) { error.textContent = 'Escribe el nombre del servicio.'; return; }
+    clearFieldErrors(name, price);
+    // El campo con error se marca además de llevar su mensaje debajo (FR-022).
+    if (!name.value.trim()) { setFieldError(name, 'Escribe el nombre del servicio.'); name.focus(); return; }
     const cents = parsePrice(price.value);
     const v = cents === null ? { ok: false, error: 'Escribe un precio válido (máximo 2 decimales).' } : validatePrice(cents);
-    if (!v.ok) { error.textContent = v.error; return; }
+    if (!v.ok) { setFieldError(price, v.error); price.focus(); return; }
     try {
       if (editingId) {
         const updated = await put(`/services/${editingId}`, { name: name.value.trim(), priceCents: cents });

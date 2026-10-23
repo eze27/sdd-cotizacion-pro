@@ -1,5 +1,8 @@
 // Arma y descarga el PDF de una cotización (contracts/pdf-cotizacion.md de la spec 001; presentación en
-// contracts/pdf-visual.md de la spec 002). Usa jsPDF (global `jspdf`). Los colores salen de los tokens de styles.css.
+// contracts/pdf-visual.md de la spec 002, revisión 2 «Despacho»). Usa jsPDF (global `jspdf`).
+// Los colores salen de los tokens de styles.css; ninguno se escribe aquí.
+// Tipografías: 'times' (serif) para título, folio y total, y 'helvetica' para el resto. Ambas son
+// fuentes estándar del formato PDF: no se incrusta ningún archivo, así que el PDF no engorda (SC-031).
 import { formatMoney, formatQuantity } from './calc.js';
 import { formatDateLong, REGIMES, CLIENT_TYPES } from './ui.js';
 
@@ -42,7 +45,8 @@ export function readTheme() {
     text: color('--color-text'),
     muted: color('--color-text-muted'),
     border: color('--color-border'),
-    ground: color('--color-ground'),
+    raised: color('--color-surface-raised'),
+    accent: color('--color-accent'),
   };
 }
 
@@ -79,27 +83,29 @@ export async function buildQuotePdf(quote) {
   }
   const titleX = logoDrawn ? RIGHT : MARGIN;
   const titleOpts = logoDrawn ? { align: 'right' } : undefined;
-  doc.setFont('helvetica', 'bold').setFontSize(26);
+  doc.setFont('times', 'bold').setFontSize(28);
   ink(theme.primary);
   doc.text('Cotización', titleX, y + 24, titleOpts);
-  doc.setFont('helvetica', 'normal').setFontSize(12);
+  doc.setFont('times', 'normal').setFontSize(13);
   ink(theme.muted);
   doc.text(`Folio ${quote.folio}`, titleX, y + 44, titleOpts);
   y += Math.max(logoH, 56) + 24;
 
   // 2. Fechas: pares etiqueta-valor
   doc.setFontSize(10);
-  const dateRow = (label, value) => {
+  // El cobre señala el vencimiento; es su único uso en el documento. Nunca es la única pista:
+  // la fecha se identifica por su etiqueta y su posición (FR-016a).
+  const dateRow = (label, value, rgb) => {
     doc.setFont('helvetica', 'normal');
     ink(theme.muted);
     doc.text(`${label}:`, MARGIN, y);
     doc.setFont('helvetica', 'bold');
-    ink(theme.text);
+    ink(rgb);
     doc.text(value, MARGIN + 110, y);
     y += 15;
   };
-  dateRow('Fecha de emisión', formatDateLong(quote.issueDate));
-  dateRow('Vigencia hasta', formatDateLong(quote.validUntil));
+  dateRow('Fecha de emisión', formatDateLong(quote.issueDate), theme.text);
+  dateRow('Vigencia hasta', formatDateLong(quote.validUntil), theme.accent);
   y += 14;
 
   // 3 y 4. Partes: "De" (emisor) y "Para" (cliente) en dos columnas; nombre en negrita
@@ -129,7 +135,7 @@ export async function buildQuotePdf(quote) {
 
   // 5. Tabla de conceptos
   function tableHeader() {
-    doc.setFillColor(...theme.ground);
+    doc.setFillColor(...theme.raised);
     doc.rect(MARGIN, y - 13, RIGHT - MARGIN, 22, 'F');
     doc.setFont('helvetica', 'bold').setFontSize(10);
     ink(theme.text);
@@ -190,7 +196,7 @@ export async function buildQuotePdf(quote) {
   doc.setFillColor(...theme.primary);
   doc.rect(TOTALS_X - 12, y, RIGHT - TOTALS_X + 12, boxH, 'F');
   ink(theme.onPrimary);
-  doc.setFont('helvetica', 'bold').setFontSize(14);
+  doc.setFont('times', 'bold').setFontSize(16);
   doc.text('Total', TOTALS_X, y + 23);
   doc.text(formatMoney(t.total), RIGHT - 10, y + 23, { align: 'right' });
 

@@ -17,7 +17,10 @@
       <a href="#/perfil" data-route="perfil">Perfil</a>
     </nav>
   </header>
-  <div id="aviso" class="aviso" role="alert" hidden></div>
+  <div id="aviso" class="aviso" role="alert" hidden>
+    <span id="aviso-texto"></span>
+    <button type="button" id="aviso-cerrar" class="aviso__cerrar" aria-label="Cerrar aviso">&times;</button>
+  </div>
   <main id="app"></main>
   <script src="vendor/jspdf.umd.min.js"></script>
   <script src="vendor/jszip.min.js"></script>
